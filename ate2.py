@@ -1,4 +1,8 @@
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+
 import pandas as pd
+import re
 
 # read json into a dataframe
 df_idf=pd.read_json("stackoverflow-data-idf.json",lines=True)
@@ -7,7 +11,6 @@ df_idf=pd.read_json("stackoverflow-data-idf.json",lines=True)
 print("Schema:\n\n",df_idf.dtypes)
 print("Number of questions,columns=",df_idf.shape)
 
-import re
 def pre_process(text):
 
     # lowercase
@@ -26,9 +29,6 @@ df_idf['text'] = df_idf['text'].apply(lambda x:pre_process(x))
 
 #show the second 'text' just for fun
 print(df_idf['text'][2])
-
-from sklearn.feature_extraction.text import CountVectorizer
-import re
 
 def get_stop_words(stop_file_path):
     """load stop words """
@@ -77,8 +77,6 @@ def extract_topn_from_vector(feature_names, sorted_items, topn=10):
         results[feature_vals[idx]]=score_vals[idx]
 
     return results
-
-from sklearn.feature_extraction.text import TfidfTransformer
 
 tfidf_transformer=TfidfTransformer(smooth_idf=True,use_idf=True)
 tfidf_transformer.fit(word_count_vector)
